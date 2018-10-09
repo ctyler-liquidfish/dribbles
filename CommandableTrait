@@ -1,0 +1,29 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ctyler
+ * Date: 10/9/18
+ * Time: 9:40 AM
+ */
+
+use Illuminate\Console\Command;
+
+trait Commandable
+{
+    public $command;
+    public function withCmd(Command $command){
+        $this->command = $command;
+    }
+    public function __call($name, $arguments)
+    {
+        if($this->command instanceof Command && preg_match('/^cmd_(.*)/', $name, $matches)){
+            return $this->command->{$matches[1]}(...$arguments);
+        }
+    }
+    public function __get($name)
+    {
+        if($this->command instanceof Command && preg_match('/^cmd_(.*)/', $name, $matches)){
+            return $this->command->{$matches[1]};
+        }
+    }
+}
