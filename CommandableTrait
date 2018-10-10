@@ -13,6 +13,7 @@ trait Commandable
     public $command;
     public function withCmd(Command $command){
         $this->command = $command;
+        return $this;
     }
     public function __call($name, $arguments)
     {
